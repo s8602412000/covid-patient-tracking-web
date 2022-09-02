@@ -7,7 +7,7 @@ const mongoose=require("mongoose");
 const app = express();
 const _ =require("lodash")
 
-mongoose.connect("mongodb+srv://s8602412000:YEAH791229@cluster0.d2g6z.mongodb.net/todolistDB",{useNewUrlParser:true, useUnifiedTopology: true});
+mongoose.connect("mongodb+srv://s8602412000:YEAH791229@cluster0.ksq9f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",{useNewUrlParser:true, useUnifiedTopology: true});
 
 app.set('view engine', 'ejs');
 
@@ -31,23 +31,22 @@ const ListSchema={
 const List=mongoose.model("List",ListSchema);
 
 
-const item1= new Item({name:"hihihi"})
-const item2= new Item({name:"hihihi"})
-const item3= new Item({name:"hihihi"})
+const item1= new Item({name:"please keep track of your health condition for the following fourteen days, use http://localhost:3000/+ your name to update any discomfort you may feel in the near future, we will monitor your data closely, thanks"})
 
-const defaultitem=[item1,item2,item3]
+
+const defaultitem=[item1]
 
 app.get("/", function(req, res) {
 
   Item.find({},function(err,result){
     if (result.length === 0){
       Item.insertMany(defaultitem,function(err){
-      if(err){console.log("errorhi")}
+      if(err){console.log("error")}
       else{console.log("success!")}
       })
       res.redirect("/");
     }
-    else{res.render("list", {listTitle: "today", newListItems: result})}
+    else{res.render("list", {listTitle: "instruction", newListItems: result})}
   })})
 
 // const day = date.getDate();
@@ -63,7 +62,7 @@ app.post("/delete", function(req, res){
   const checkeditem= req.body.checkbox
   const listName=req.body.listName
 
-  if(listName==="today"){Item.findByIdAndRemove(checkeditem,function(err){
+  if(listName==="instruction"){Item.findByIdAndRemove(checkeditem,function(err){
     if(!err){
       console.log("success!")
       res.redirect("/")}
@@ -131,7 +130,7 @@ app.post("/", function(req, res){
 app.get("/about", function(req, res){
   res.render("about");
 });
-
-app.listen( process.env.PORT, function() {
+// process.env.PORT
+app.listen( 3000, function() {
   console.log("Server started on port 3000");
 });
